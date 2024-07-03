@@ -37,7 +37,7 @@ class User(BaseModel):
     __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    guid: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), unique=True, default=uuid.uuid4)
+    guid: Mapped[uuid.UUID] = mapped_column(String(36), unique=True, default=uuid.uuid4)
     password: Mapped[str] = mapped_column(String(128))
     username: Mapped[str] = mapped_column(String(150), unique=True)
     name: Mapped[str] = mapped_column(String(150), default="")
@@ -51,11 +51,25 @@ class Task(BaseModel):
     __tablename__ = "task"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    guid: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), unique=True, default=uuid.uuid4)
+    guid: Mapped[uuid.UUID] = mapped_column(String(36), unique=True, default=uuid.uuid4)
     priority: Mapped[int] = mapped_column(Integer)
-    text: Mapped[str] = mapped_column(String)
+    text: Mapped[str] = mapped_column(String(50))
     completed: Mapped[bool] = mapped_column(Boolean, default=False)
     posted_at: Mapped[date] = mapped_column(Date)
 
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
     user: Mapped["User"] = relationship(back_populates="tasks")
+
+
+class PetUsers(BaseModel):
+    __tablename__ = "pet_users"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(30))
+    email: Mapped[str] = mapped_column(String(30))
+    phone: Mapped[str] = mapped_column(String(30))
+    wechat: Mapped[str] = mapped_column(String(30))
+    pic: Mapped[str] = mapped_column(String(30))
+    sex: Mapped[int] = mapped_column(Integer)
+    reg_time: Mapped[DateTime] = mapped_column(DateTime)
+    actived: Mapped[bool] = mapped_column(Boolean)
